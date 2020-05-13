@@ -54,6 +54,7 @@ public class PullRequestSCMHead extends SCMHead implements ChangeRequestSCMHead2
 
     private Boolean merge;
     private final int number;
+    private String title;
     private final BranchSCMHead target;
     private final String sourceOwner;
     private final String sourceRepo;
@@ -74,6 +75,7 @@ public class PullRequestSCMHead extends SCMHead implements ChangeRequestSCMHead2
         this.sourceBranch = copy.sourceBranch;
         this.origin = copy.origin;
         this.metadata = copy.metadata;
+        this.title = copy.title;
     }
 
     PullRequestSCMHead(GHPullRequest pr, String name, boolean merge) {
@@ -87,6 +89,7 @@ public class PullRequestSCMHead extends SCMHead implements ChangeRequestSCMHead2
         this.sourceOwner = repository == null ? null : repository.getOwnerName();
         this.sourceRepo = repository == null ? null : repository.getName();
         this.sourceBranch = pr.getHead().getRef();
+        this.title = pr.getTitle();
 
         if (pr.getRepository().getOwnerName().equalsIgnoreCase(sourceOwner)) {
             this.origin = SCMHeadOrigin.DEFAULT;
@@ -120,6 +123,10 @@ public class PullRequestSCMHead extends SCMHead implements ChangeRequestSCMHead2
 
     public int getNumber() {
         return number;
+    }
+
+    public String getTitle() {
+        return title;
     }
 
     /**

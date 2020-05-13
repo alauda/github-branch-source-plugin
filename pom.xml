@@ -8,7 +8,7 @@
         <relativePath />
     </parent>
     <artifactId>github-branch-source</artifactId>
-    <version>${revision}${changelist}</version>
+    <version>${revision}${sha1}${changelist}-alauda</version>
     <packaging>hpi</packaging>
     <name>GitHub Branch Source Plugin</name>
     <url>https://github.com/jenkinsci/${project.artifactId}-plugin</url>
@@ -21,8 +21,9 @@
     </licenses>
 
     <properties>
-        <revision>2.7.2</revision>
+        <revision>2.10</revision>
         <changelist>-SNAPSHOT</changelist>
+        <sha1></sha1>
         <hpi.compatibleSinceVersion>2.2.0</hpi.compatibleSinceVersion>
         <java.level>8</java.level>
         <jenkins.version>2.164.3</jenkins.version>
@@ -30,6 +31,17 @@
         <jcasc.version>1.35</jcasc.version>
         <jjwt.version>0.10.5</jjwt.version>
     </properties>
+
+    <distributionManagement>
+        <repository>
+            <id>${releases.id}</id>
+            <url>${releases.url}</url>
+        </repository>
+        <snapshotRepository>
+            <id>${snapshots.id}</id>
+            <url>${snapshots.url}</url>
+        </snapshotRepository>
+    </distributionManagement>
 
     <scm>
         <connection>scm:git:git://github.com/jenkinsci/${project.artifactId}-plugin.git</connection>
@@ -140,6 +152,20 @@
             <id>repo.jenkins-ci.org</id>
             <url>https://repo.jenkins-ci.org/public/</url>
         </repository>
+        <repository>
+          <releases>
+            <enabled>false</enabled>
+          </releases>
+          <snapshots>
+            <enabled>true</enabled>
+          </snapshots>
+          <id>nexus-oss-snapshots</id>
+          <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+        </repository>
+        <repository>
+          <id>release</id>
+          <url>https://oss.sonatype.org/content/repositories/releases</url>
+        </repository>
     </repositories>
     <pluginRepositories>
         <pluginRepository>
@@ -147,4 +173,32 @@
             <url>https://repo.jenkins-ci.org/public/</url>
         </pluginRepository>
     </pluginRepositories>
+
+    <profiles>
+        <profile>
+            <id>incrementals</id>
+            <properties>
+                <snapshots.url>https://nexus.acp.alauda.cn/repository/maven-snapshots/</snapshots.url>
+                <releases.id>nexus.acp.alauda.cn</releases.id>
+                <snapshots.id>nexus.acp.alauda.cn</snapshots.id>
+                <snapshots.name>nexus.acp.alauda.cn</snapshots.name>
+                <releases.url>https://nexus.acp.alauda.cn/repository/maven-incrementals/</releases.url>
+                <releases.name>nexus.acp.alauda.cn</releases.name>
+            </properties>
+        </profile>
+        <profile>
+            <id>release</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <snapshots.url>https://nexus.acp.alauda.cn/repository/maven-snapshots/</snapshots.url>
+                <releases.id>nexus.acp.alauda.cn</releases.id>
+                <snapshots.id>nexus.acp.alauda.cn</snapshots.id>
+                <snapshots.name>nexus.acp.alauda.cn</snapshots.name>
+                <releases.url>https://nexus.acp.alauda.cn/repository/maven-releases/</releases.url>
+                <releases.name>nexus.acp.alauda.cn</releases.name>
+            </properties>
+        </profile>
+    </profiles>
 </project>
