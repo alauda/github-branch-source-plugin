@@ -67,7 +67,7 @@ pipeline {
                     hpiRelease.debug = DEBUG
                     hpiRelease.caculate()
 
-                    RELEASE_VERSION = hpiRelease.releaseVersion + "-alauda"
+                    RELEASE_VERSION = hpiRelease.releaseVersion
 
                     sh 'echo "commit=$GIT_COMMIT" > src/main/resources/debug.properties'
                     sh 'echo "build=$RELEASE_VERSION" >> src/main/resources/debug.properties'
